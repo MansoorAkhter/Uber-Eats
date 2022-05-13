@@ -3,8 +3,13 @@ import React from "react";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
+// import API_KEY from "../config";
+// import {GOOGLE_API_KEY} from "@env"
+
 
 export default function SearchBar({ cityHandler }) {
+
+
   return (
     <View style={{ marginTop: 15, flexDirection: "row" }}>
       <GooglePlacesAutocomplete
@@ -52,6 +57,7 @@ export default function SearchBar({ cityHandler }) {
               style={{ marginRight: 6 }}
             />
             <Text>Search</Text>
+      
           </View>
         )}
       />
