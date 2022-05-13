@@ -4,6 +4,8 @@ import HeaderTabs from '../components/HeaderTabs'
 import SearchBar from '../components/SearchBar'
 import Categories from '../components/Categories'
 import RestaurantItems, { localRestaurants } from '../components/RestaurantItems'
+// import { Divider } from 'react-native-elements'
+import BottomTabs from '../components/BottomTabs'
 
 const YELP_API_KEY =
   "1pThvy2f77-an8XhG-tjHfFhNkRFdx1PNCTo92bSZnXp4w4jnA0m_U8_bor6A0r95yHmKV5yzk1C70JrCtaNZzsfuvncg-h1MMcuibOaJbX_TP181S3QLXgjNN58YnYx";
@@ -11,37 +13,35 @@ const YELP_API_KEY =
 
 export default function Home() {
   const [restaurantData, setRestaurantData] = useState(localRestaurants);
-
+  const [city, setCity] = useState("San Francisco");
+  const [activeTab, setActiveTab] = useState("Delivery");
 
   const getRestaurantsFromYelp = () => {
-    const yelpUrl = "https://api.yelp.com/v3/businesses/search?term=restaurants&location=Newyork";
+    const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurants&location=${city}`;
+    const apiOptions = { headers: { Authorization: `Bearer ${YELP_API_KEY}`, } }
 
-    const apiOptions = {
-      headers: {
-        Authorization: `Bearer ${YELP_API_KEY}`,
-      },
-    }
-
-    return fetch(yelpUrl, apiOptions).then((res) => res.json()).then(json => setRestaurantData(json.businesses))
+    return fetch(yelpUrl, apiOptions).then((res) => res.json()).then(json => setRestaurantData(json.businesses.filter((business) => business.transactions.includes(activeTab.toLowerCase()))))
 
   };
 
 
   useEffect(() => {
     getRestaurantsFromYelp();
-  }, []);
+  }, [city, activeTab]);
 
 
   return (
     <View style={{ backgroundColor: "#eee", flex: 1, width: "100%" }}>
       <View style={{ backgroundColor: "white", padding: 15, marginTop: 45 }}>
-        <HeaderTabs />
-        <SearchBar />
+        <HeaderTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+        <SearchBar cityHandler={setCity} />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Categories />
         <RestaurantItems restaurantData={restaurantData} />
       </ScrollView>
+      {/* <Divider width={1}/> */}
+      <BottomTabs />
     </View>
   )
 }
