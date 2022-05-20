@@ -11,12 +11,14 @@ const YELP_API_KEY =
   "1pThvy2f77-an8XhG-tjHfFhNkRFdx1PNCTo92bSZnXp4w4jnA0m_U8_bor6A0r95yHmKV5yzk1C70JrCtaNZzsfuvncg-h1MMcuibOaJbX_TP181S3QLXgjNN58YnYx";
 
 
-export default function Home({navigation}) {
+export default function Home({ navigation }) {
+  
   const [restaurantData, setRestaurantData] = useState(localRestaurants);
   const [city, setCity] = useState("San Francisco");
   const [activeTab, setActiveTab] = useState("Delivery");
 
   const getRestaurantsFromYelp = () => {
+
     const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurants&location=${city}`;
     const apiOptions = { headers: { Authorization: `Bearer ${YELP_API_KEY}`, } }
 
@@ -32,7 +34,7 @@ export default function Home({navigation}) {
 
   return (
     <View style={{ backgroundColor: "#eee", flex: 1, width: "100%" }}>
-    
+
       <View style={{ backgroundColor: "white", padding: 15, marginTop: 45 }}>
         <HeaderTabs activeTab={activeTab} setActiveTab={setActiveTab} />
         <SearchBar cityHandler={setCity} />
@@ -41,10 +43,10 @@ export default function Home({navigation}) {
       <ScrollView showsVerticalScrollIndicator={false}>
         <Categories />
         <RestaurantItems restaurantData={restaurantData}
-          navigation={navigation}/>
+          navigation={navigation} />
       </ScrollView>
 
-      <Divider width={1}/>
+      <Divider width={1} />
       <BottomTabs />
     </View>
   )
