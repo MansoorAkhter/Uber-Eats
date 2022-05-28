@@ -24,7 +24,7 @@ export default function About(props) {
     <View>
       <RestaurantImage image={image} />
       <RestaurantName name={name} />
-      <RestaurantDetail description={description} />
+      <RestaurantDescription description={description} />
     </View>
   )
 }
@@ -37,6 +37,6 @@ const RestaurantName = (props) => (
   <Text style={{ fontSize: 29, fontWeight: "600", marginTop: 10, marginHorizontal: 15 }}>{props.name}</Text>
 )
 
-const RestaurantDetail = (props) => (
+const RestaurantDescription = (props) => (
   <Text style={{ marginTop: 10, marginHorizontal: 15, fontWeight: "400", fontSize: 15.5 }}>{props.description}</Text>
 )
