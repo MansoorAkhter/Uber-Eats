@@ -2,6 +2,8 @@ import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import React from "react";
 import { Divider } from "react-native-elements";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { useDispatch } from "react-redux";
+
 
 const foods = [
   {
@@ -90,6 +92,8 @@ const foods = [
   },
 ];
 
+
+
 const styles = StyleSheet.create({
   menuItemStyle: {
     flexDirection: "row",
@@ -102,7 +106,21 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function MenuItems() {
+export default function MenuItems({ restaurantName }) {
+
+  const dispatch = useDispatch();
+  const selectItem = (item, checkboxValue) => {
+    console.log("dsadsaddd",item, checkboxValue)
+    dispatch({
+      type: "ADD_TO_CART",
+      payload: {
+        ...item,
+        restaurantName: restaurantName,
+        checkboxValue: checkboxValue,
+      },
+    });
+  }
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       {foods.map((food, index) => (
@@ -111,6 +129,7 @@ export default function MenuItems() {
             <BouncyCheckbox
               iconStyle={{ borderColor: "lightgray", borderRadius: 0 }}
               fillColor="green"
+              onPress={(checkboxValue) => selectItem(food, checkboxValue)}
             />
             <FoodInfo food={food} />
             <FoodImage food={food} />
