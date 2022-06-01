@@ -1,66 +1,85 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
+import { useSelector } from "react-redux";
 
 export default function ViewCart() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        justifyContent:"center",
-        flexDirection: "row",
-        position: "absolute",
-        bottom:330,
-        zIndex: 999
-      }}
-    >
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          width: "100%",
+  const items = useSelector((state) => state.cartReducer.selectedItems.items);
+  const total = items
+    .map((item) => Number(item.price.replace("$", "")))
+    .reduce((prev, curr) => prev + curr, 0);
 
-        }}
-      >
-        <TouchableOpacity
+  const totalUSD = total.toLocaleString("en", {
+    style: "currency",
+    currency: "USD",
+  });
+  console.log(totalUSD);
+
+  return (
+    <>
+      {total ? (
+        <View
           style={{
-            marginTop: 20,
-            backgroundColor: "black",
+            flex: 1,
             alignItems: "center",
-            padding: 10,
-            borderRadius: 30,
-            width: 300,
-            position: "relative",
+            justifyContent: "center",
+            flexDirection: "row",
+            position: "absolute",
+            bottom: 330,
+            zIndex: 999,
           }}
         >
-        <Text style={{color:"white", fontSize:20}}>View Cart</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-
-    // <View style={{ zIndex: 999, top: 425 }}>
-    //   <View
-    //     style={{
-    //       alignSelf: "center",
-    //       justifyContent: "center",
-    //       flexDirection: "row",
-    //       position: "relative",
-    //     }}
-    //   >
-    //     <Text
-    //       style={{
-    //         color: "white",
-    //         fontSize: 20,
-    //         backgroundColor: "black",
-    //         textAlign: "center",
-    //         width: "70%",
-    //         borderRadius: 30,
-    //         padding: 10,
-    //       }}
-    //     >
-    //       VIEWCART
-    //     </Text>
-    //   </View>
-    // </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              width: "100%",
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                marginTop: 20,
+                backgroundColor: "black",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                padding: 10,
+                borderRadius: 30,
+                width: 300,
+                position: "relative",
+              }}
+            >
+              <Text style={{ color: "white", fontSize: 20, marginLeft: 20 }}>View Cart</Text>
+              <Text style={{ color: "white", fontSize: 20, marginRight: 20 }}>${totalUSD}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      ) : (
+        console.log("Item not selected")
+      )}
+    </>
   );
 }
+
+// <View style={{ zIndex: 999, top: 425 }}>
+//   <View
+//     style={{
+//       alignSelf: "center",
+//       justifyContent: "center",
+//       flexDirection: "row",
+//       position: "relative",
+//     }}
+//   >
+//     <Text
+//       style={{
+//         color: "white",
+//         fontSize: 20,
+//         backgroundColor: "black",
+//         textAlign: "center",
+//         width: "70%",
+//         borderRadius: 30,
+//         padding: 10,
+//       }}
+//     >
+//       VIEWCART
+//     </Text>
+//   </View>
+// </View>
